@@ -1,63 +1,23 @@
-# 🔒 Python
-
-**pycache**/
+__pycache__/
 *.py[cod]
 *.pyo
 *.pyd
-
-# 🔒 Virtual Environments
-
 venv/
 env/
 .venv/
 ENV/
-env.bak/
-venv.bak/
-
-# 🔒 Conda
-
 conda-meta/
 *.conda
 *.tar.bz2
-
-# 🔒 Jupyter
-
 .ipynb_checkpoints/
-
-# 🔒 Logs
-
 *.log
-
-# 🔒 OS Files
-
 .DS_Store
 Thumbs.db
-
-# 🔒 IDE
-
 .vscode/
 .idea/
-
-# 🔒 Model Files (Optional)
-
-models/*.pkl
-
-# 🔒 Data Files (Optional - if large/private)
-
-data/raw/*
-data/processed/*
-
-# 🔒 Environment Variables
-
 .env
-
-# 🔒 Build / cache
-
 *.egg-info/
 dist/
 build/
-
-# 🔒 Temporary files
-
 *.tmp
 *.swp
