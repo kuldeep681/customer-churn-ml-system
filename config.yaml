@@ -1,0 +1,15 @@
+data:
+  raw_data_path: data/raw/churn.csv
+  processed_data_path: data/processed/
+
+model:
+  model_path: models/churn_model.pkl
+  test_size: 0.2
+  random_state: 42
+
+api:
+  host: 0.0.0.0
+  port: 8000
+
+logging:
+  level: INFO
