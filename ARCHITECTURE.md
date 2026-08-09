@@ -1,30 +1,56 @@
-# 🧱 Project Architecture
+# 🧱 Project Architecture (Scalable Design)
+
+---
 
 ## 📁 Folder Structure
 
-```
-customer-churn-ml-system/
-│
-├── data/
-│   ├── raw/
-│   └── processed/
-│
-├── notebooks/
-│   └── eda.ipynb
-│
-├── src/
-│   ├── config/
-│   ├── data/
-│   ├── features/
-│   ├── models/
-│   ├── evaluation/
-│   ├── api/
-│   └── utils/
-│
-├── models/
-├── config.yaml
-├── requirements.txt
-└── run.py
+```text
+    customer-churn-ml-system/
+    │
+    ├── data/
+    │   ├── raw/
+    │   └── processed/
+    │
+    ├── notebooks/
+    │   └── eda.ipynb
+    │
+    ├── src/
+    │   ├── config/
+    │   │   └── config_loader.py
+    │   │
+    │   ├── data/
+    │   │   └── preprocess.py
+    │   │
+    │   ├── features/
+    │   │   └── feature_engineering.py
+    │   │
+    │   ├── models/
+    │   │   ├── train_model.py
+    │   │   ├── predict_model.py
+    │   │   └── model_loader.py
+    │   │
+    │   ├── evaluation/
+    │   │   └── evaluate.py
+    │   │
+    │   ├── services/
+    │   │   └── prediction_service.py
+    │   │
+    │   ├── api/
+    │   │   ├── main.py
+    │   │   ├── routes/
+    │   │   │   └── predict.py
+    │   │   └── schemas/
+    │   │       └── prediction_schema.py
+    │   │
+    │   └── utils/
+    │       ├── logger.py
+    │       └── helpers.py
+    │
+    ├── models/
+    │
+    ├── config.yaml
+    ├── requirements.txt
+    └── run.py
 ```
 
 ---
@@ -35,46 +61,101 @@ customer-churn-ml-system/
 
 - Central configuration
 - No hardcoding
+- Used across all modules
+
+---
 
 ### 2. Data Layer
 
-- Load and clean data
+- Data loading
+- Data cleaning
+- No ML logic
+
+---
 
 ### 3. Feature Layer
 
-- Transform data for ML
+- Feature transformation
+- Encoding & scaling
+- Shared between training & inference
+
+---
 
 ### 4. Model Layer
 
-- Train and predict
+- Model training
+- Model loading
+- Prediction logic
+- No API or request handling
+
+---
 
 ### 5. Evaluation Layer
 
-- Measure performance
+- Metrics computation
+- Cross-validation
+- Model performance tracking
 
-### 6. API Layer
+---
 
-- Serve predictions
+### 6. Service Layer
 
-### 7. Utils Layer
+- Orchestrates prediction flow
+- Combines preprocessing + model + logic
+- Bridge between API and ML
 
-- Logging and helpers
+---
+
+### 7. API Layer
+
+- FastAPI endpoints
+- Request validation
+- Response formatting
+- No ML logic inside
+
+---
+
+### 8. Utils Layer
+
+- Logging
+- Helper functions
+- Shared utilities
 
 ---
 
 ## 🔁 Data Flow
 
-### Training Flow
+### 🔹 Training Flow
 
-```
-Raw Data → Preprocess → Features → Train → Save Model
-```
+    Raw Data
+       ↓
+    Data Layer
+       ↓
+    Feature Layer
+       ↓
+    Model Layer (train)
+       ↓
+    Evaluation Layer
+       ↓
+    Save Model
 
-### Prediction Flow
+---
 
-```
-Input → API → Load Model → Predict → Response
-```
+### 🔹 Prediction Flow
+
+    User Input
+       ↓
+    API Layer
+       ↓
+    Service Layer
+       ↓
+    Model Loader
+       ↓
+    Preprocessor
+       ↓
+    Model Prediction
+       ↓
+    Response
 
 ---
 
@@ -83,15 +164,18 @@ Input → API → Load Model → Predict → Response
 - Separation of concerns
 - Reusability
 - Scalability
-- Environment independence
+- No ML logic in API
+- No business logic in API
+- Config-driven system
 
 ---
 
 ## 🚀 Deployment Strategy
 
 - Same code runs locally and on EC2
-- Only environment changes (IP/port)
-- Model stored on server
+- Only config/environment changes
+- Model stored in `/models`
+- API served via public IP
 
 ---
 
@@ -99,7 +183,17 @@ Input → API → Load Model → Predict → Response
 
 - No Docker
 - No CI/CD
-- Free-tier friendly
-- Lightweight
+- Free-tier AWS only
+- Lightweight setup
+
+---
+
+## 🔮 Future Scalability
+
+- Multiple model support
+- Model versioning
+- Background jobs
+- Caching (Redis)
+- Monitoring & logging
 
 ---
