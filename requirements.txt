@@ -7,3 +7,5 @@ uvicorn
 pydantic
 joblib
 pyyaml
+matplotlib
+seaborn
