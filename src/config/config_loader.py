@@ -2,7 +2,11 @@ import yaml
 from pathlib import Path
 
 
-def load_config(config_path="config.yaml"):
+def load_config(config_path: str = "config.yaml"):
+    """
+    Load configuration file from project root
+    """
+
     # 🔥 Get project root (2 levels up from this file)
     base_path = Path(__file__).resolve().parents[2]
 
@@ -17,5 +21,5 @@ def load_config(config_path="config.yaml"):
     return config
 
 
-# Singleton
+# 🔥 Singleton (load once)
 CONFIG = load_config()
