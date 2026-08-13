@@ -1,22 +1,14 @@
-import joblib
-import numpy as np
-import pandas as pd
-from pathlib import Path
-
-from src.config.config_loader import load_config
-
-
-# 🔹 Load model once (important for performance)
-config = load_config()
-base_path = Path(__file__).resolve().parents[2]
-model_path = base_path / config["model"]["model_path"]
-
-artifact = joblib.load(model_path)
-model = artifact["model"]
-preprocessor = artifact["preprocessor"]
+from src.models.predict_model import (
+    predict_churn,
+    explain_churn,
+)
 
 
 def get_risk_level(probability: float) -> str:
+    """
+    Convert churn probability into a human-readable risk level.
+    """
+
     if probability > 0.7:
         return "High"
     elif probability > 0.4:
@@ -26,21 +18,46 @@ def get_risk_level(probability: float) -> str:
 
 
 def predict(input_data: dict):
-    # 🔹 Convert to DataFrame
-    df = pd.DataFrame([input_data])
+    """
+    Application-level prediction service.
 
-    # 🔹 Apply preprocessing
-    X_transformed = preprocessor.transform(df)
+    Delegates the actual ML prediction to predict_churn()
+    and adds the business-level risk classification.
+    """
 
-    # 🔹 Prediction
-    prediction = int(model.predict(X_transformed)[0])
-    probability = float(model.predict_proba(X_transformed)[0][1])
+    # Core ML prediction
+    prediction, probability = predict_churn(input_data)
 
-    # 🔹 Risk Level
+    # Business-level risk classification
     risk_level = get_risk_level(probability)
 
     return {
         "churn_prediction": prediction,
         "churn_probability": probability,
-        "risk_level": risk_level
+        "risk_level": risk_level,
+    }
+
+
+def explain(input_data: dict):
+    """
+    Application-level explanation service.
+
+    Generates the prediction and attaches the most influential
+    SHAP features to explain the model output.
+    """
+
+    # Get normal prediction
+    prediction, probability = predict_churn(input_data)
+
+    # Calculate risk level
+    risk_level = get_risk_level(probability)
+
+    # Generate SHAP explanation
+    explanation = explain_churn(input_data)
+
+    return {
+        "churn_prediction": prediction,
+        "churn_probability": probability,
+        "risk_level": risk_level,
+        "explanation": explanation,
     }
