@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
@@ -12,7 +13,10 @@ from src.config.config_loader import load_config
 
 config = load_config()
 
-database_url = config["database"]["url"]
+database_url = os.getenv(
+    "DATABASE_URL",
+    config["database"]["url"],
+)
 
 
 # ---------------------------------------------------------
@@ -37,12 +41,15 @@ if database_url.startswith("sqlite:///"):
 # Database Engine
 # ---------------------------------------------------------
 
-engine = create_engine(
-    database_url,
-    connect_args={
-        "check_same_thread": False,
-    },
-)
+if database_url.startswith("sqlite"):
+    engine = create_engine(
+        database_url,
+        connect_args={
+            "check_same_thread": False,
+        },
+    )
+else:
+    engine = create_engine(database_url)
 
 
 # ---------------------------------------------------------
