@@ -132,56 +132,57 @@ The deployment then wraps that application with:
 
 ## 📚 Table of Contents
 
-- [Project Overview](#project-overview)
-- [Problem Statement](#problem-statement)
-- [Project Goals](#project-goals)
-- [System Architecture](#system-architecture)
-- [Dataset](#dataset)
-- [Machine Learning Pipeline](#machine-learning-pipeline)
-- [Feature Engineering](#feature-engineering)
-- [Model](#model)
-- [Decision Threshold](#decision-threshold)
-- [Model Evaluation](#model-evaluation)
-- [Model Packaging](#model-packaging)
-- [FastAPI Application](#fastapi-application)
-- [API Endpoints](#api-endpoints)
-- [API Validation](#api-validation)
-- [SHAP Explainability](#shap-explainability)
-- [Database](#database)
-- [SQLAlchemy](#sqlalchemy)
-- [Testing](#testing)
-- [Docker](#docker)
-- [Docker Compose](#docker-compose)
-- [CI/CD](#cicd)
-- [AWS Deployment](#aws-deployment)
-- [EC2](#ec2)
-- [IAM](#iam)
-- [Nginx](#nginx)
-- [S3 Model Backup](#s3-model-backup)
-- [S3 Restore Verification](#s3-restore-verification)
-- [CloudWatch](#cloudwatch)
-- [Public Deployment Flow](#public-deployment-flow)
-- [Public API Verification](#public-api-verification)
-- [Project Structure](#project-structure)
-- [Local Setup](#local-setup)
-- [Training the Model](#training-the-model)
-- [Running the Application](#running-the-application)
-- [Running with Docker Compose](#running-with-docker-compose)
-- [Running Tests](#running-tests)
-- [Example Prediction](#example-prediction)
-- [Example Explanation](#example-explanation)
-- [Key Engineering Decisions](#key-engineering-decisions)
-- [AWS Cost and Security Considerations](#aws-cost-and-security-considerations)
-- [What I Learned](#what-i-learned)
-- [Limitations](#limitations)
-- [Future Improvements](#future-improvements)
-- [Project Outcome](#project-outcome)
-- [Final Architecture](#final-architecture)
+- [Project Overview](#-project-overview)
+- [Problem Statement](#-problem-statement)
+- [Project Goals](#-project-goals)
+- [System Architecture](#-system-architecture)
+- [Dataset](#-dataset)
+- [Machine Learning Pipeline](#-machine-learning-pipeline)
+- [Feature Engineering](#-feature-engineering)
+- [Model](#-model)
+- [Decision Threshold](#-decision-threshold)
+- [Model Evaluation](#-model-evaluation)
+- [Model Packaging](#-model-packaging)
+- [FastAPI Application](#-fastapi-application)
+- [API Endpoints](#-api-endpoints)
+- [API Validation](#-api-validation)
+- [SHAP Explainability](#-shap-explainability)
+- [Database](#-database)
+- [SQLAlchemy](#-sqlalchemy)
+- [Testing](#-testing)
+- [Docker](#-docker)
+- [Docker Compose](#-docker-compose)
+- [CI/CD](#-cicd)
+- [AWS Deployment](#-aws-deployment)
+- [EC2](#-ec2)
+- [IAM](#-iam)
+- [Nginx](#-nginx)
+- [S3 Model Backup](#-s3-model-backup)
+- [S3 Restore Verification](#-s3-restore-verification)
+- [CloudWatch](#-cloudwatch)
+- [Public Deployment Flow](#-public-deployment-flow)
+- [Public API Verification](#-public-api-verification)
+- [Project Structure](#-project-structure)
+- [Local Setup](#-local-setup)
+- [Training the Model](#-training-the-model)
+- [Running the Application](#-running-the-application)
+- [Running with Docker Compose](#-running-with-docker-compose)
+- [Running Tests](#-running-tests)
+- [Example Prediction](#-example-prediction)
+- [Example Explanation](#-example-explanation)
+- [Key Engineering Decisions](#-key-engineering-decisions)
+- [AWS Cost and Security Considerations](#-aws-cost-and-security-considerations)
+- [What I Learned](#-what-i-learned)
+- [Limitations](#-limitations)
+- [Future Improvements](#-future-improvements)
+- [Project Outcome](#-project-outcome)
+- [Final Architecture](#-final-architecture)
 
 ---
 
 # 📌 Project Overview
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 Customer churn prediction is a binary classification problem where the objective is to identify customers who are likely to leave a service.
 
 The machine learning portion of this project uses the **Telco Customer Churn** dataset to train a model capable of predicting churn.
@@ -221,6 +222,8 @@ The final deployed API was tested from outside the EC2 instance through its publ
 
 # 🎯 Problem Statement
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
+
 > **Business perspective:** identify customers with a higher likelihood of churn so that retention efforts can focus on customers who need attention.
 
 Customer churn can have a significant business impact because acquiring a new customer can be more expensive than retaining an existing one.
@@ -237,6 +240,7 @@ The project intentionally prioritizes **recall** because missing a customer who 
 
 # 🧭 Project Goals
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The project was designed around several goals.
 
 ## Machine Learning
@@ -270,6 +274,8 @@ The project was designed around several goals.
 ---
 
 # 🏗️ System Architecture
+
+[⬆️ Back to Table of Contents](#-table-of-contents)
 
 ## High-Level Architecture
 
@@ -324,36 +330,37 @@ Prediction History
 
 # 🔄 End-to-End Flow
 
-    Customer Input
-          |
-          v
-       FastAPI
-          |
-          v
-    Pydantic Validation
-          |
-          v
-    Preprocessing Pipeline
-          |
-          v
-    XGBoost Model
-          |
-          v
-    Churn Probability
-          |
-          v
-    Decision Threshold
-          |
-          v
-      Prediction
-          |
-      +---+---+
-      |       |
-      v       v
-    PostgreSQL  API Response
-      |
-      v
-    Prediction History
+[⬆️ Back to Table of Contents](#-table-of-contents)
+Customer Input
+|
+v
+FastAPI
+|
+v
+Pydantic Validation
+|
+v
+Preprocessing Pipeline
+|
+v
+XGBoost Model
+|
+v
+Churn Probability
+|
+v
+Decision Threshold
+|
+v
+Prediction
+|
++---+---+
+| |
+v v
+PostgreSQL API Response
+|
+v
+Prediction History
 
 For explainability:
 
@@ -378,6 +385,7 @@ For explainability:
 
 # 📊 Dataset
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The project uses the **Telco Customer Churn** dataset.
 
 Dataset shape:
@@ -416,6 +424,7 @@ The original `customerID` column was removed because it is an identifier rather 
 
 # 🔍 Exploratory Data Analysis
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 Before modeling, the dataset was analyzed to understand:
 
 - Dataset structure
@@ -439,6 +448,7 @@ EDA was used to understand the data before building the ML pipeline rather than 
 
 # 🧹 Machine Learning Pipeline
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The preprocessing pipeline was designed using scikit-learn.
 
 The general flow is:
@@ -483,6 +493,7 @@ This prevents information from the test set from leaking into the training proce
 
 # 🛠️ Feature Engineering
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The existing dataset already contained useful customer attributes.
 
 Rather than continuously creating additional features without a clear reason, the project deliberately kept feature engineering relatively simple.
@@ -497,6 +508,7 @@ This keeps the project focused on the complete ML lifecycle.
 
 # 🤖 Model
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The classification model used in this project is:
 
 ## XGBoost Classifier
@@ -511,6 +523,7 @@ The project also used class weighting to place greater emphasis on the churn cla
 
 # 🎚️ Decision Threshold
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 Instead of relying blindly on the default classification threshold, the project uses a custom threshold:
 
     0.30
@@ -537,6 +550,7 @@ This decision was made because the project prioritizes **recall for churn detect
 
 # 🤖 Model Evaluation
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The final model evaluation produced the following results:
 
 | Metric    |  Value |
@@ -557,6 +571,7 @@ The trade-off is lower precision, which is expected when the decision boundary i
 
 # 🤖 Model Packaging
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The trained model is stored as:
 
 `models/churn_model.pkl`
@@ -601,6 +616,8 @@ Training and API serving are kept separate.
 
 # ⚡ FastAPI Application
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
+
 > 🚦 **The ML model becomes a service here.** Instead of manually opening a notebook and running inference, another system can send an HTTP request and receive a structured prediction.
 
 The trained ML pipeline is exposed through a FastAPI application.
@@ -623,6 +640,8 @@ FastAPI is responsible for:
 ---
 
 # 🔌 API Endpoints
+
+[⬆️ Back to Table of Contents](#-table-of-contents)
 
 ## 1. Health Check
 
@@ -720,6 +739,7 @@ Example structure:
 
 # 🛡️ API Validation
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 Incoming requests are validated using Pydantic.
 
 For example, `gender` only accepts:
@@ -745,6 +765,7 @@ This demonstrates that invalid inputs are rejected before reaching the predictio
 
 # 🔎 SHAP Explainability
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The `/explain` endpoint uses SHAP to provide feature-level explanations for model predictions.
 
 The goal is to move from:
@@ -773,6 +794,7 @@ This makes the model output easier to interpret.
 
 # 🗄️ Database
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The application stores prediction history in PostgreSQL.
 
 The database has a practical purpose:
@@ -815,6 +837,7 @@ This verified that the API prediction and database persistence were connected co
 
 # 🔧 SQLAlchemy
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 SQLAlchemy is used as the database interaction layer.
 
 The application uses:
@@ -831,6 +854,7 @@ This keeps database interaction separate from the core prediction logic.
 
 # 🧪 Testing
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The application includes automated testing using `pytest`.
 
 Testing covers important application behavior such as:
@@ -849,6 +873,8 @@ The objective is to make application behavior repeatable and automatically verif
 ---
 
 # 🐳 Docker
+
+[⬆️ Back to Table of Contents](#-table-of-contents)
 
 > 📦 **Goal:** make the application portable. The same containerized application can be run locally and on the EC2 instance without rebuilding the runtime environment from scratch.
 
@@ -878,6 +904,7 @@ Docker provides:
 
 # 🐳 Docker Compose
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 Docker Compose is used to run the application and database together.
 
 Architecture:
@@ -910,6 +937,7 @@ Example deployed services:
 
 # 🔄 CI/CD
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 GitHub Actions is used for basic continuous integration.
 
 The CI workflow performs checks such as:
@@ -933,6 +961,8 @@ The purpose of the CI pipeline is to automatically verify that changes do not br
 ---
 
 # ☁️ AWS Deployment
+
+[⬆️ Back to Table of Contents](#-table-of-contents)
 
 > 💡 **AWS was used as a temporary learning environment, not as a permanent production platform.**
 
@@ -976,6 +1006,7 @@ The deployment flow was:
 
 # 💻 EC2
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 Amazon EC2 was used to host the Dockerized application.
 
 The EC2 instance provided the compute environment required to run:
@@ -1003,6 +1034,7 @@ The application was accessed publicly through Nginx rather than directly exposin
 
 # 🔐 IAM
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 An IAM role was attached to the EC2 instance to allow the instance to interact with AWS services without embedding AWS access keys inside the application.
 
 The role was used for:
@@ -1016,6 +1048,7 @@ The S3 permissions were kept scoped to the required bucket/object operations rat
 
 # 🌐 Nginx
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 Nginx was used as a reverse proxy in front of FastAPI.
 
 The public architecture is:
@@ -1041,6 +1074,7 @@ The public `/health` endpoint was successfully tested through Nginx.
 
 # 🪣 S3 Model Backup
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 Amazon S3 was used specifically as **model artifact backup/storage**.
 
 The trained model artifact:
@@ -1077,6 +1111,7 @@ Instead:
 
 # ♻️ S3 Restore Verification
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The model was downloaded from S3 back to the EC2 instance.
 
 Example:
@@ -1098,6 +1133,8 @@ This verified that the model artifact could be restored from S3 without corrupti
 ---
 
 # 📡 CloudWatch
+
+[⬆️ Back to Table of Contents](#-table-of-contents)
 
 > 👀 **Monitoring objective:** make application activity visible outside the container so requests and failures can be inspected centrally.
 
@@ -1124,6 +1161,7 @@ The project intentionally avoided unnecessary expensive monitoring infrastructur
 
 # 🌍 Public Deployment Flow
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The final public request flow was:
 
     Windows / External Client
@@ -1153,6 +1191,7 @@ The final public request flow was:
 
 # ✅ Public API Verification
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The public API was verified through the EC2 public IP.
 
 ## Health
@@ -1199,6 +1238,7 @@ This verified public request validation.
 
 # 🏁 Deployment Verification
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The final public deployment successfully verified:
 
 | Component                     | Verification |
@@ -1222,6 +1262,7 @@ The final public deployment successfully verified:
 
 # 📁 Project Structure
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The project follows a modular structure separating training, API serving, database interaction, configuration, and infrastructure concerns.
 
 A simplified representation is:
@@ -1261,6 +1302,8 @@ The exact repository structure may contain additional modules and configuration 
 
 # 💻 Local Setup
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
+
 ## 1. Clone the repository
 
     git clone <YOUR_GITHUB_REPOSITORY_URL>
@@ -1296,6 +1339,7 @@ Secrets and environment-specific values should not be committed to Git.
 
 # 🏋️ Training the Model
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The project uses a root-level training script:
 
     python train.py
@@ -1327,6 +1371,7 @@ The resulting model artifact is stored under:
 
 # ▶️ Running the Application
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The FastAPI application can be started using Uvicorn.
 
 The deployed application uses:
@@ -1351,6 +1396,7 @@ OpenAPI specification:
 
 # 🐳 Running with Docker Compose
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 Build and start the application stack:
 
     docker compose up --build
@@ -1372,6 +1418,7 @@ Stop the stack:
 
 # 🧪 Running Tests
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 Run the automated test suite using:
 
     pytest
@@ -1389,6 +1436,7 @@ The tests are intended to verify application behavior including:
 
 # 🧾 Example Prediction
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 Example customer:
 
     {
@@ -1436,6 +1484,7 @@ Interpretation:
 
 # 🔎 Example Explanation
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The `/explain` endpoint returns SHAP-based explanations.
 
 Example response structure:
@@ -1459,6 +1508,7 @@ The explanation contains the features that contributed to the model's prediction
 
 # ☁️ Deployment Commands Used During AWS Testing
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 After connecting to EC2:
 
     ssh -i customer-churn-key.pem ec2-user@<EC2_PUBLIC_IP>
@@ -1494,6 +1544,8 @@ Verify the restored artifact:
 ---
 
 # 🧠 Key Engineering Decisions
+
+[⬆️ Back to Table of Contents](#-table-of-contents)
 
 ## 1. Recall over accuracy
 
@@ -1577,6 +1629,7 @@ After the demonstration, unnecessary AWS resources are removed to avoid ongoing 
 
 # 💰 AWS Cost and Security Considerations
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The project was designed with cost safety in mind.
 
 The following infrastructure was intentionally avoided:
@@ -1597,6 +1650,7 @@ The AWS deployment was kept intentionally small.
 
 # 🔐 IAM Security
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The EC2 instance used an IAM role instead of hardcoding AWS credentials into the application.
 
 The role provided the permissions needed for:
@@ -1626,6 +1680,7 @@ This demonstrates the principle of granting only the permissions required for th
 
 # 🌍 Public Testing
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 The final application was tested from outside the EC2 instance.
 
 The public flow was:
@@ -1664,6 +1719,7 @@ The public `/predict` response was compared with the corresponding database reco
 
 # 📡 Monitoring Verification
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 CloudWatch received the application's Docker logs.
 
 The following types of events were visible:
@@ -1681,6 +1737,7 @@ This verified that the monitoring setup could capture both successful requests a
 
 # 🎓 What I Learned
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 This project was primarily built to understand the complete ML engineering lifecycle.
 
 The most important lessons were:
@@ -1756,6 +1813,7 @@ The project helped connect the entire lifecycle:
 
 # ⚠️ Limitations
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 This project is intentionally a learning and portfolio system rather than a commercial production platform.
 
 It does not include:
@@ -1781,6 +1839,7 @@ These technologies can be valuable in larger systems, but adding them here would
 
 # 🚀 Future Improvements
 
+[⬆️ Back to Table of Contents](#-table-of-contents)
 If this system were extended beyond the current learning objective, possible improvements could include:
 
 - Model versioning
@@ -1803,6 +1862,8 @@ These are intentionally outside the current project's scope.
 ---
 
 # 🏆 Project Outcome
+
+[⬆️ Back to Table of Contents](#-table-of-contents)
 
 > 🎉 **The final outcome is a complete ML engineering workflow, not just a trained model.**
 
@@ -1871,43 +1932,44 @@ The project demonstrates not only how to train a machine learning model, but how
 
 # 🗺️ Complete Project Lifecycle
 
-    📊 DATA
-       ↓
-    🔍 EDA
-       ↓
-    🧹 PREPROCESSING
-       ↓
-    🤖 XGBOOST
-       ↓
-    📈 EVALUATION
-       ↓
-    📦 MODEL ARTIFACT
-       ↓
-    ⚡ FASTAPI
-       ↓
-    🗄️ POSTGRESQL
-       ↓
-    🧪 TESTS
-       ↓
-    🐳 DOCKER
-       ↓
-    🔗 DOCKER COMPOSE
-       ↓
-    🔄 GITHUB ACTIONS
-       ↓
-    ☁️ AWS EC2
-       ↓
-    🌐 NGINX
-       ↓
-    🪣 S3 BACKUP
-       ↓
-    📡 CLOUDWATCH
-       ↓
-    🌍 PUBLIC VERIFICATION
-       ↓
-    🎥 DEMONSTRATION
-       ↓
-    🧹 AWS CLEANUP
+[⬆️ Back to Table of Contents](#-table-of-contents)
+📊 DATA
+↓
+🔍 EDA
+↓
+🧹 PREPROCESSING
+↓
+🤖 XGBOOST
+↓
+📈 EVALUATION
+↓
+📦 MODEL ARTIFACT
+↓
+⚡ FASTAPI
+↓
+🗄️ POSTGRESQL
+↓
+🧪 TESTS
+↓
+🐳 DOCKER
+↓
+🔗 DOCKER COMPOSE
+↓
+🔄 GITHUB ACTIONS
+↓
+☁️ AWS EC2
+↓
+🌐 NGINX
+↓
+🪣 S3 BACKUP
+↓
+📡 CLOUDWATCH
+↓
+🌍 PUBLIC VERIFICATION
+↓
+🎥 DEMONSTRATION
+↓
+🧹 AWS CLEANUP
 
 > **Build → Test → Deploy → Verify → Demonstrate → Clean Up**
 
@@ -1915,48 +1977,48 @@ The project demonstrates not only how to train a machine learning model, but how
 
 # 🏗️ Final Architecture
 
-    +-----------------------+
-    |    External Client    |
-    +-----------+-----------+
-                |
-                v
-    +-----------------------+
-    |     EC2 Public IP     |
-    |         :80           |
-    +-----------+-----------+
-                |
-                v
-    +-----------------------+
-    |        Nginx          |
-    |    Reverse Proxy      |
-    +-----------+-----------+
-                |
-                v
-    +--------------------------------------+
-    |          FastAPI Container           |
-    |                                      |
-    |  /health   /predict   /explain       |
-    +------------------+-------------------+
-                       |
-          +------------+------------+
-          |            |            |
-          v            v            v
-     PostgreSQL   ML Pipeline      SHAP
-          |            |            |
-          |            v            |
-          |        XGBoost          |
-          |            |            |
-          |            v            |
-          |    Churn Probability   |
-          |            |            |
-          |            v            |
-          |        Threshold        |
-          |            |            |
-          +------------+------------+
-                       |
-                       v
-                Prediction Response
-
+[⬆️ Back to Table of Contents](#-table-of-contents)
++-----------------------+
+| External Client |
++-----------+-----------+
+|
+v
++-----------------------+
+| EC2 Public IP |
+| :80 |
++-----------+-----------+
+|
+v
++-----------------------+
+| Nginx |
+| Reverse Proxy |
++-----------+-----------+
+|
+v
++--------------------------------------+
+| FastAPI Container |
+| |
+| /health /predict /explain |
++------------------+-------------------+
+|
++------------+------------+
+| | |
+v v v
+PostgreSQL ML Pipeline SHAP
+| | |
+| v |
+| XGBoost |
+| | |
+| v |
+| Churn Probability |
+| | |
+| v |
+| Threshold |
+| | |
++------------+------------+
+|
+v
+Prediction Response
 
     +------------------+       +--------------------+
     |       S3         |       |    CloudWatch      |
